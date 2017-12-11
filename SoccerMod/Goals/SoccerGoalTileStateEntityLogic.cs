@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Reflection;
 using Plukit.Base;
+using SoccerMod.Totem;
 using Staxel;
 using Staxel.Core;
 using Staxel.Entities;
@@ -12,7 +12,7 @@ using Staxel.Logic;
 using Staxel.Tiles;
 using Staxel.TileStates;
 
-namespace SoccerMod {
+namespace SoccerMod.Goals {
     public class SoccerGoalTileStateEntityLogic : TileStateEntityLogic, IUseItemEntityCallback {
         SoccerGoalComponentBuilder.GoalComponent _goalComponent;
         bool _done;
@@ -21,11 +21,11 @@ namespace SoccerMod {
         Vector3D _countPosition;
         Shape _boundingShape;
         internal int GoalCount { get; private set; }
-        //readonly HashSet<EntityId> _ballEntities = new HashSet<EntityId>();
-        //readonly List<EntityId> _removeCache = new List<EntityId>();
-        bool _persistentRestore;
         public SoccerTotemTileStateEntityLogic Totem;
         public int Team = -1;
+        public Timestep SpawnFireworksStart;
+        private Timestep _lastSpawn;
+        public bool SpawnRed;
 
         public SoccerGoalTileStateEntityLogic(Entity entity)
             : base(entity) {
@@ -51,6 +51,22 @@ namespace SoccerMod {
             if (universe.TileOffset(Location, TileAccessFlags.None, out tileOffset))
                 _countPosition.Y += tileOffset.Y;
 
+            CheckIfEntityExists();
+
+            if (!IsClaimed() || !Totem.HasGameStarted())
+                return;
+
+            if (SpawnFireworksStart + (long)(_goalComponent.FireworkLaunchingLength * Constants.TimestepsPerSecond) > timestep) {
+                if (timestep - _lastSpawn > _goalComponent.FireworkTimeBetweenLaunch * Constants.TimestepsPerSecond) {
+                    _lastSpawn = timestep;
+                    SpawnFireworks(universe);
+                }
+                return;
+            }
+
+            if (Totem.CanStartNewGame())
+                return;
+
             // get all entities inside the goal area
             var entities = universe.FindAllEntitiesInRange(tile.Configuration.TileCenter(Location, tile.Variant()), (float)_boundingShape.Radius.Length(),
                 FindEntityCondition);
@@ -58,23 +74,44 @@ namespace SoccerMod {
                 return;
 
             // if an item has moved into the goal area increase the score
-            if (IsClaimed() && Totem.IsReady()) {
-                Console.WriteLine("Checking all entities in collision.");
-                foreach (var entity in entities) {
-                    var itemlogic = entity.Logic as ItemEntityLogic;
-                    if (itemlogic == null)
-                        continue;
-                    Console.WriteLine("There is an item logic.");
-                    ItemStack stack = (ItemStack)GetInstanceField(typeof(ItemEntityLogic), itemlogic, "Stack"); //Use reflection to find internal stack
-                    if (stack.Item.Configuration.Code == "mods.Deamon.Soccer.SoccerBall") {
-                        SetInstanceField(typeof(ItemEntityLogic), itemlogic, "Stack", new ItemStack());
-                        Totem.IncreaseScore(Team); //Increase the score
-                        Totem.ResetBall(universe);
-                    }
+            Console.WriteLine("Checking all entities in collision.");
+            foreach (var entity in entities) {
+                var itemlogic = entity.Logic as ItemEntityLogic;
+                if (itemlogic == null)
+                    continue;
+                Console.WriteLine("There is an item logic.");
+                ItemStack stack = (ItemStack)GetInstanceField(typeof(ItemEntityLogic), itemlogic, "Stack"); //Use reflection to find internal stack
+                if (stack.Item.Configuration.Code == "mods.Deamon.Soccer.item.SoccerBall") {
+                    SetInstanceField(typeof(ItemEntityLogic), itemlogic, "Stack", new ItemStack());
+                    Totem.IncreaseScore(Team, timestep); //Increase the score
                 }
             }
-            else {
-                //Something should happen
+        }
+
+        public void CheckIfEntityExists() {
+            if (Totem != null && Totem.IsLingering())
+                Totem = null;
+        }
+
+        public void SpawnFireworks(EntityUniverseFacade universe) {
+            Item item;
+            if (SpawnRed)
+                item = GameContext.ItemDatabase.SpawnItem(_goalComponent.RedGoalFireworkItem, null);
+            else
+                item = GameContext.ItemDatabase.SpawnItem(_goalComponent.BlueGoalFireworkItem, null);
+
+            for (var i = 0; i < _goalComponent.FireworkItemQuantity; ++i) {
+                if (item.Configuration.Components.Contains<FireworkComponent>())
+                    FireworkEntityBuilder.SpawnFirework(Entity, universe, item, _countPosition,
+                        _goalComponent.FireworkLaunchVelocity +
+                        _goalComponent.FireworkLaunchVelocitySpread * GameContext.RandomSource.NextVector3DInSphere(),
+                        _goalComponent.FireworkFlightSeconds +
+                        _goalComponent.FireworkFlightSecondsSpread * GameContext.RandomSource.NextFloat(0f, 1f));
+                else
+                    ItemEntityBuilder.SpawnDroppedItem(Entity, universe, new ItemStack(item, 1), _countPosition,
+                        _goalComponent.FireworkLaunchVelocity +
+                        _goalComponent.FireworkLaunchVelocitySpread * GameContext.RandomSource.NextVector3DInSphere(),
+                        Vector3D.Zero, SpawnDroppedFlags.AchievementValid | SpawnDroppedFlags.SpawnJitter);
             }
         }
 
@@ -164,7 +201,7 @@ namespace SoccerMod {
             _goalComponent = _configuration.Components.GetOrDefault<SoccerGoalComponentBuilder.GoalComponent>();
             var tile = _configuration.MakeTile();
             Vector3D ignored;
-            _boundingShape = tile.Configuration.FetchBoundingBox(tile.Variant(), out ignored).ToShape().Scale(_goalComponent == null ? 0.5f : _goalComponent.HitBoxScale);
+            _boundingShape = tile.Configuration.FetchBoundingBox(tile.Variant(), out ignored).ToShape().Scale(_goalComponent == null ? 1f : _goalComponent.HitBoxScale);
             Location = arguments.FetchBlob("location").GetVector3I();
             _variant = (uint)arguments.GetLong("variant");
             Entity.Physics.Construct(arguments.FetchBlob("position").GetVector3D(), Vector3D.Zero);
@@ -214,7 +251,6 @@ namespace SoccerMod {
             _countPosition = data.GetBlob("countPosition").GetVector3D();
             GoalCount = (int)data.GetLong("goalCount", 0);
             Store();
-            _persistentRestore = true;
         }
 
         public override bool IsLingering() {
@@ -235,9 +271,5 @@ namespace SoccerMod {
         }
 
         public void UseItem(Entity entity, EntityUniverseFacade facade, Vector3I position) { }
-
-        public override string AltInteractVerb() {
-            return "controlHint.verb.Reset";
-        }
     }
 }

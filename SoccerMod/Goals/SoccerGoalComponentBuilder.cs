@@ -2,10 +2,10 @@
 using Plukit.Base;
 using Staxel.Core;
 
-namespace SoccerMod {
+namespace SoccerMod.Goals {
     public class SoccerGoalComponentBuilder : IComponentBuilder {
         public string Kind() {
-            return "soccerGoals";
+            return "mod.deamon.soccer.soccerGoals";
         }
 
         public object Instance(Blob config) {
@@ -13,17 +13,21 @@ namespace SoccerMod {
         }
 
         public class GoalComponent {
-            public Blob GoalFireworkItem { get; private set; }
+            public Blob BlueGoalFireworkItem { get; private set; }
+            public Blob RedGoalFireworkItem { get; private set; }
             public int FireworkItemQuantity { get; private set; }
             public Vector3D FireworkLaunchVelocity { get; private set; }
             public Vector3D FireworkLaunchVelocitySpread { get; private set; }
             public float FireworkFlightSeconds { get; private set; }
             public float FireworkFlightSecondsSpread { get; private set; }
+            public float FireworkTimeBetweenLaunch { get; private set; }
+            public float FireworkLaunchingLength { get; private set; }
             public HashSet<string> ScoreWithCategories { get; private set; }
             public float HitBoxScale { get; private set; }
 
             public GoalComponent(Blob config) {
-                GoalFireworkItem = config.FetchBlob("goalFireworkItem");
+                BlueGoalFireworkItem = config.FetchBlob("blueGoalFireworkItem");
+                RedGoalFireworkItem = config.FetchBlob("redGoalFireworkItem");
                 FireworkItemQuantity = (int)config.GetLong("fireworkItemQuantity", 1);
                 FireworkLaunchVelocity = config.Contains("fireworkLaunchVelocity")
                     ? config.GetBlob("fireworkLaunchVelocity").GetVector3D()
@@ -33,10 +37,12 @@ namespace SoccerMod {
                     : Vector3D.Zero;
                 FireworkFlightSeconds = (float)config.GetDouble("fireworkFlightSeconds", 0.7);
                 FireworkFlightSecondsSpread = (float)config.GetDouble("fireworkFlightSecondsSpread", 0.0);
+                FireworkTimeBetweenLaunch = (float)config.GetDouble("FireworkTimeBetweenLaunch", 1.0);
+                FireworkLaunchingLength = (float)config.GetDouble("FireworkLaunchingLength", 8.0);
                 ScoreWithCategories = new HashSet<string>();
                 foreach (var entry in config.FetchList("scoreWithItemCategories"))
                     ScoreWithCategories.Add(entry.GetString());
-                HitBoxScale = (float)config.GetDouble("hitBoxScale", 0.5);
+                HitBoxScale = (float)config.GetDouble("hitBoxScale", 0.75);
             }
         }
     }

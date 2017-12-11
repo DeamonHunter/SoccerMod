@@ -1,8 +1,9 @@
 ﻿using Plukit.Base;
 using Staxel.Logic;
 using Staxel.Tiles;
+using Staxel.TileStates;
 
-namespace Staxel.TileStates.Totems {
+namespace SoccerMod.Totem {
     class SoccerTotemTileStateBuilder : ITileStateBuilder {
         public void Dispose() { }
         public void Load() { }

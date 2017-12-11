@@ -48,6 +48,7 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
     <Reference Include="Plukit.Base, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\Program Files\Steam\steamapps\common\Staxel\bin\Plukit.Base.dll</HintPath>
@@ -76,6 +77,8 @@
     <Compile Include="Goals\SoccerGoalTileStateEntityBuilder.cs" />
     <Compile Include="Goals\SoccerGoalTileStateEntityLogic.cs" />
     <Compile Include="Goals\SoccerGoalTileStateEntityPainter.cs" />
+    <Compile Include="Totem\SoccerTotemComponentBuilder.cs" />
+    <Compile Include="Totem\SoccerTotemTileStateEntityPainter.cs" />
     <Compile Include="Totem\SoccerTotemTileStateEntityBuilder.cs" />
     <Compile Include="Totem\SoccerTotemTileStateBuilder.cs" />
     <Compile Include="Totem\SoccerTotemTileStateEntityLogic.cs" />

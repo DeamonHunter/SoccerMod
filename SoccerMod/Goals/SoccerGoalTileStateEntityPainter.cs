@@ -7,7 +7,7 @@ using Staxel.Effects;
 using Staxel.Logic;
 using Staxel.Rendering;
 
-namespace SoccerMod {
+namespace SoccerMod.Goals {
     public class SoccerGoalTileStateEntityPainter : EntityPainter {
         readonly BillboardNumberRenderer _billboardNumberRenderer = new BillboardNumberRenderer();
         EffectRenderer _effectRenderer = Allocator.EffectRenderer.Allocate();
@@ -39,7 +39,7 @@ namespace SoccerMod {
                 return;
 
             var logic = entity.TileStateEntityLogic as SoccerGoalTileStateEntityLogic;
-            if (logic == null && !logic.IsClaimed())
+            if (logic == null || !logic.IsClaimed())
                 return;
 
             var renderPosition = logic.GetCountPosition();

@@ -1,25 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Reflection;
-using Plukit.Base;
+﻿using Plukit.Base;
 using Staxel;
 using Staxel.Core;
-using Staxel.Draw;
 using Staxel.Entities;
-using Staxel.EntityActions;
 using Staxel.Items;
-using Staxel.Items.ItemComponents;
 using Staxel.Logic;
 using Staxel.Notifications;
 using Staxel.Tiles;
 using Staxel.TileStates;
+using SoccerMod.Totem;
 
-namespace SoccerMod {
+namespace SoccerMod.Center {
     public class CenterTileStateEntityLogic : TileStateEntityLogic {
         bool _done;
         TileConfiguration _configuration;
         uint _variant;
-        private CenterComponentBuilder.CenterTotemComponent _component;
+        public CenterComponentBuilder.CenterTotemComponent Component;
         public int Team = -1;
         public SoccerTotemTileStateEntityLogic Totem;
         private Item _ball;
@@ -37,7 +32,7 @@ namespace SoccerMod {
             Tile tile;
             if (!universe.ReadTile(Location, TileAccessFlags.None, out tile))
                 return;
-            if ((tile.Configuration != _configuration) || (_variant != tile.Variant()) || (_component == null)) {
+            if ((tile.Configuration != _configuration) || (_variant != tile.Variant()) || (Component == null)) {
                 _done = true;
                 if (tile.Configuration == _configuration)
                     universe.RemoveTile(Entity, Location, TileAccessFlags.None);
@@ -45,6 +40,7 @@ namespace SoccerMod {
             if (!_ballSpawned && RoundStartedTimestep + 6 * Constants.TimestepsPerSecond < timestep) {
                 ResetBall(universe);
             }
+            CheckIfEntityExists();
         }
 
         public override void PostUpdate(Timestep timestep, EntityUniverseFacade universe) {
@@ -52,12 +48,17 @@ namespace SoccerMod {
                 universe.RemoveEntity(Entity.Id);
         }
 
+        public void CheckIfEntityExists() {
+            if (Totem != null && Totem.IsLingering())
+                Totem = null;
+        }
+
         public bool IsClaimed() {
             return Totem != null;
         }
 
         public Vector3D GetSpawningPosition() {
-            return _configuration.TileCenter(Location, _variant) + _component.BallSpawnLocation;
+            return _configuration.TileCenter(Location, _variant) + Component.BallSpawnLocation;
         }
 
 
@@ -92,20 +93,20 @@ namespace SoccerMod {
             _variant = (uint)_blob.GetLong("variant");
             _done = _blob.GetBool("done");
             _configuration = GameContext.TileDatabase.GetTileConfiguration(_blob.GetString("tile"));
-            _component = _configuration.Components.Get<CenterComponentBuilder.CenterTotemComponent>();
-            _ballSpawned = _blob.GetBool("ballSpawned", false);
+            Component = _configuration.Components.Get<CenterComponentBuilder.CenterTotemComponent>();
+            _ballSpawned = _blob.GetBool("ballSpawned", true);
             RoundStartedTimestep = _blob.GetTimestep("roundStartedTimestep", Timestep.Null);
         }
 
         public override void Construct(Blob arguments, EntityUniverseFacade entityUniverseFacade) {
             _configuration = GameContext.TileDatabase.GetTileConfiguration(arguments.GetString("tile"));
-            _component = _configuration.Components.GetOrDefault<CenterComponentBuilder.CenterTotemComponent>();
+            Component = _configuration.Components.GetOrDefault<CenterComponentBuilder.CenterTotemComponent>();
             Location = arguments.FetchBlob("location").GetVector3I();
             _variant = (uint)arguments.GetLong("variant");
             Entity.Physics.Construct(arguments.FetchBlob("position").GetVector3D(), Vector3D.Zero);
             Entity.Physics.MakePhysicsless();
-
-            _ball = GameContext.ItemDatabase.SpawnItem(_component.SoccerBall, null);
+            _ballSpawned = true;
+            _ball = GameContext.ItemDatabase.SpawnItem(Component.SoccerBall, null);
         }
 
         public override void Bind() { }
@@ -115,26 +116,20 @@ namespace SoccerMod {
                 return;
             if (!IsClaimed()) {
                 var player = entity.PlayerEntityLogic;
-                player.ShowNotification(GameContext.NotificationDatabase.CreateNotificationFromCode(_component.NotClaimedNotification, entity.Step, NotificationParams.EmptyParams));
+                player.ShowNotification(GameContext.NotificationDatabase.CreateNotificationFromCode(Component.NotClaimedNotification, entity.Step, NotificationParams.EmptyParams));
                 return;
             }
             if (!Totem.IsReady()) {
                 var player = entity.PlayerEntityLogic;
-                player.ShowNotification(GameContext.NotificationDatabase.CreateNotificationFromCode(_component.NotClaimedNotification, entity.Step, NotificationParams.EmptyParams));
+                player.ShowNotification(GameContext.NotificationDatabase.CreateNotificationFromCode(Component.NotClaimedNotification, entity.Step, NotificationParams.EmptyParams));
                 return;
             }
 
-            if (!Totem.HasGameStarted()) {
+            if (Totem.CanStartNewGame()) {
                 Totem.ResetGame();
                 PrepareReset(facade.Step);
             }
 
-        }
-
-
-
-        public string[] GetDrawableNumbers() {
-            return _component.numbers;
         }
 
         public override bool CanChangeActiveItem() {
@@ -169,7 +164,7 @@ namespace SoccerMod {
             Entity.Construct(data.GetBlob("constructData"), facade);
             base.RestoreFromPersistedData(data, facade);
             _done = data.GetBool("done");
-            _ballSpawned = _blob.GetBool("ballSpawned", false);
+            _ballSpawned = _blob.GetBool("ballSpawned", true);
             RoundStartedTimestep = _blob.GetTimestep("roundStartedTimestep", Timestep.Null);
             Store();
         }

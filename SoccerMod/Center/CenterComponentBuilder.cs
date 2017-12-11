@@ -5,10 +5,10 @@ using Staxel.Core;
 using Staxel.Draw;
 using Staxel.Voxel;
 
-namespace SoccerMod {
+namespace SoccerMod.Center {
     public class CenterComponentBuilder : IComponentBuilder {
         public string Kind() {
-            return "mod.deamon.soccer.soccerGoals";
+            return "mod.deamon.soccer.soccerCenter";
         }
 
         public object Instance(Blob config) {
@@ -22,7 +22,7 @@ namespace SoccerMod {
             public string TotemNotComplete { get; private set; }
             public string TickSound { get; private set; }
             public string StartRoundSound { get; private set; }
-            public string[] numbers { get; private set; }
+            public Drawable[] Numbers { get; private set; }
 
             public CenterTotemComponent(Blob config) {
                 SoccerBall = config.FetchBlob("soccerBall");
@@ -32,12 +32,10 @@ namespace SoccerMod {
                 TickSound = config.GetString("tickSound", "");
                 StartRoundSound = config.GetString("startRoundSound", "");
 
-                numbers = new string[6];
+                Numbers = new Drawable[6];
                 var countdown = config.GetBlob("countdown");
                 for (int i = 0; i < 6; i++) {
-                    numbers[i] = countdown.GetString(i.ToString());
-                    if (GameContext.Revalidate)
-                        GameContext.Resources.FetchVoxelDrawableSync(numbers[i]);
+                    Numbers[i] = GameContext.Resources.FetchVoxelDrawableSync(countdown.GetString(i.ToString()));
                 }
             }
         }

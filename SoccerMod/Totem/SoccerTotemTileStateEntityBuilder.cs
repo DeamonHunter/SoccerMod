@@ -1,9 +1,8 @@
 ﻿using Plukit.Base;
-using SoccerMod;
 using Staxel.Logic;
 using Staxel.Tiles;
 
-namespace Staxel.TileStates.Totems {
+namespace SoccerMod.Totem {
     class SoccerTotemTileStateEntityBuilder : IEntityPainterBuilder, IEntityLogicBuilder {
         public string Kind { get { return KindCode; } }
         public static string KindCode { get { return "mods.Deamon.Soccer.tileStateEntity.Totem"; } }
@@ -15,7 +14,7 @@ namespace Staxel.TileStates.Totems {
         public void Load() { }
 
         EntityPainter IEntityPainterBuilder.Instance() {
-            return new TotemTileStateEntityPainter();
+            return new SoccerTotemTileStateEntityPainter();
         }
 
         public static Entity Spawn(EntityUniverseFacade facade, Tile tile, Vector3I location) {

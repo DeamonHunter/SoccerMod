@@ -1,10 +1,8 @@
-﻿using System;
-using Plukit.Base;
+﻿using Plukit.Base;
 using Staxel.Logic;
 using Staxel.Tiles;
-using Staxel.TileStates;
 
-namespace SoccerMod {
+namespace SoccerMod.Center {
     public class CenterTileStateEntityBuilder : IEntityPainterBuilder, IEntityLogicBuilder {
         public string Kind { get { return KindCode; } }
         public static string KindCode { get { return "mods.Deamon.Soccer.tileStateEntity.Center"; } }

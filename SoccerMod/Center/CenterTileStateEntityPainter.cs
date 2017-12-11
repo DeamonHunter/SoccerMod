@@ -1,22 +1,17 @@
-﻿using System;
-using Plukit.Base;
-using Staxel;
+﻿using Plukit.Base;
 using Staxel.Client;
 using Staxel.Core;
 using Staxel.Draw;
-using Staxel.Effects;
 using Staxel.Logic;
 using Staxel.Rendering;
 using Staxel.Sound;
-using Staxel.Voxel;
 
-namespace SoccerMod {
+namespace SoccerMod.Center {
     public class CenterTileStateEntityPainter : EntityPainter {
         SoundEmitter _soundEmitter = new SoundEmitter();
-        private Drawable[] drawables;
-        bool _chimed;
-        bool _chime;
-        private bool _fetchedDrawables;
+        private bool _playStartRound;
+        private bool _playTick;
+        private int _numberToDraw;
 
         protected override void Dispose(bool disposing) {
             if (!disposing)
@@ -27,55 +22,77 @@ namespace SoccerMod {
             _soundEmitter = null;
         }
 
-        public override void RenderUpdate(Timestep timestep, Entity entity, AvatarController avatarController, EntityUniverseFacade facade) { }
+        public override void RenderUpdate(Timestep timestep, Entity entity, AvatarController avatarController, EntityUniverseFacade facade) {
+            var logic = entity.TileStateEntityLogic as CenterTileStateEntityLogic;
+
+            int lastNum = _numberToDraw;
+
+            if (logic == null || logic.RoundStartedTimestep == Timestep.Null || logic.RoundStartedTimestep + 6 * Constants.TimestepsPerSecond < timestep) {
+                _numberToDraw = -1;
+                return;
+            }
+
+            if (logic.RoundStartedTimestep + 1 * Constants.TimestepsPerSecond > timestep)
+                _numberToDraw = 5;
+            else if (logic.RoundStartedTimestep + 2 * Constants.TimestepsPerSecond > timestep)
+                _numberToDraw = 4;
+            else if (logic.RoundStartedTimestep + 3 * Constants.TimestepsPerSecond > timestep)
+                _numberToDraw = 3;
+            else if (logic.RoundStartedTimestep + 4 * Constants.TimestepsPerSecond > timestep)
+                _numberToDraw = 2;
+            else if (logic.RoundStartedTimestep + 5 * Constants.TimestepsPerSecond > timestep)
+                _numberToDraw = 1;
+            else if (logic.RoundStartedTimestep + 6 * Constants.TimestepsPerSecond > timestep)
+                _numberToDraw = 0;
+
+            if (lastNum != _numberToDraw && _numberToDraw == 0)
+                _playStartRound = true;
+            else if (lastNum != _numberToDraw && _numberToDraw > 0)
+                _playTick = true;
+        }
 
         public override void ClientUpdate(Timestep timestep, Entity entity, AvatarController avatarController, EntityUniverseFacade facade) { }
         public override void ClientPostUpdate(Timestep timestep, Entity entity, AvatarController avatarController, EntityUniverseFacade facade) { }
 
         public override void BeforeRender(DeviceContext graphics, Vector3D renderOrigin, Entity entity,
-            AvatarController avatarController, Timestep renderTimestep) { }
-
-        public override void Render(DeviceContext graphics, Matrix4F matrix, Vector3D renderOrigin, Entity entity, AvatarController avatarController, Timestep renderTimestep, RenderMode renderMode) {
-            //if (renderMode != RenderMode.Normal)
-            //    return;
-
+            AvatarController avatarController, Timestep renderTimestep) {
             var logic = entity.TileStateEntityLogic as CenterTileStateEntityLogic;
-            if (logic == null && logic.RoundStartedTimestep == Timestep.Null || logic.RoundStartedTimestep + 6 * Constants.TimestepsPerSecond < renderTimestep)
+            if (logic == null || logic.IsLingering())
                 return;
 
-            if (!_fetchedDrawables)
-                Setup(logic);
+            _soundEmitter.Render(entity.Physics.Position + logic.Component.BallSpawnLocation, renderOrigin, RenderMode.Normal);
 
-            int drawNum = 0;
-            if (logic.RoundStartedTimestep + 1 * Constants.TimestepsPerSecond > renderTimestep)
-                drawNum = 5;
-            else if (logic.RoundStartedTimestep + 2 * Constants.TimestepsPerSecond > renderTimestep)
-                drawNum = 4;
-            else if (logic.RoundStartedTimestep + 3 * Constants.TimestepsPerSecond > renderTimestep)
-                drawNum = 3;
-            else if (logic.RoundStartedTimestep + 4 * Constants.TimestepsPerSecond > renderTimestep)
-                drawNum = 2;
-            else if (logic.RoundStartedTimestep + 5 * Constants.TimestepsPerSecond > renderTimestep)
-                drawNum = 1;
+            if (!_soundEmitter.IsEmitting && _playStartRound) {
+                if (!logic.Component.StartRoundSound.IsNullOrEmpty()) {
+                    _soundEmitter.Emit(logic.Component.StartRoundSound);
+                    _playStartRound = false;
+                }
+                else
+                    _playStartRound = false;
+            }
+            if (!_soundEmitter.IsEmitting && _playTick) {
+                if (!logic.Component.TickSound.IsNullOrEmpty()) {
+                    _soundEmitter.Emit(logic.Component.TickSound);
+                    _playTick = false;
+                }
+                else
+                    _playTick = false;
+            }
+        }
 
+        public override void Render(DeviceContext graphics, Matrix4F matrix, Vector3D renderOrigin, Entity entity, AvatarController avatarController, Timestep renderTimestep, RenderMode renderMode) {
+            if (renderMode != RenderMode.Normal)
+                return;
+
+            var logic = entity.TileStateEntityLogic as CenterTileStateEntityLogic;
+            if (logic == null || _numberToDraw < 0)
+                return;
 
             var delta = (logic.GetSpawningPosition() - renderOrigin).ToVector3F();
 
-            //var m = 
-            //var m2 = Matrix4F.CreateTranslation(delta);
-            //m = m.Multiply(m2);
+            var m = Matrix4F.CreateTranslation(delta);
 
-            //drawables[drawNum].Render(graphics, m.Apply(matrix));
-        }
-
-        private void Setup(CenterTileStateEntityLogic logic) {
-            var nums = logic.GetDrawableNumbers();
-            drawables = new Drawable[nums.Length];
-            for (int i = 0; i < nums.Length; i++) {
-                drawables[i] = GameContext.Resources.FetchVoxelDrawableSync(nums[i]);
-                Console.WriteLine(nums[i]);
-            }
-            _fetchedDrawables = true;
+            logic.Component.Numbers[_numberToDraw].Render(graphics, m.Multiply(matrix));
         }
 
         public override bool AssociatedWith(Entity entity) {

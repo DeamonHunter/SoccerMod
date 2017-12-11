@@ -3,7 +3,7 @@ using Staxel.Logic;
 using Staxel.Tiles;
 using Staxel.TileStates;
 
-namespace SoccerMod {
+namespace SoccerMod.Goals {
     public class SoccerGoalTileStateBuilder : ITileStateBuilder {
         public void Dispose() { }
         public void Load() { }
