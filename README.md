@@ -4,7 +4,7 @@ A soccer mod for the game Staxel. http://playstaxel.com/
 This mod shows off how to add several new tile entities in the game as well as how to interact with some features that the game provides.
 
 ## Installation of mod to staxel
-Download: http://mods.playstaxel.com/mod/view/75 or https://github.com/DeamonHunter/SoccerMod/releases
+Download: http://mods.playstaxel.com/mod/view/86 or https://github.com/DeamonHunter/SoccerMod/releases or http://steamcommunity.com/sharedfiles/filedetails/?id=1228469451
 
 1. Double click on SoccerMod.sxlmod and let it install.
 2. Start the game and enjoy.
