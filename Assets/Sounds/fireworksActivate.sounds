@@ -1,0 +1,9 @@
+{
+  "code": "mods.Deamon.Soccer.sound.FireworksActivate",
+  "sounds": [
+    {
+      "file": "staxel/sound/sfx/item/fireworks/Fireworks_Activate",
+      "volume": 0.4
+    }
+  ]
+}

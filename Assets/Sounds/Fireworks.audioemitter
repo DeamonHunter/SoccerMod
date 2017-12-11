@@ -1,0 +1,12 @@
+{
+	"code": "mods.Deamon.Soccer.sound.Fireworks",
+	"zeroDistance": 0.0,
+	"zeroLevel": 1.0,
+    "minDistance": 16.0,
+	"minLevel": 1.0,
+    "maxDistance": 128.0,
+	"maxLevel": 0.01,
+    "infDistance": 256.0,
+	"infLevel": 0.0,
+    "curveFactor": 2.0
+}

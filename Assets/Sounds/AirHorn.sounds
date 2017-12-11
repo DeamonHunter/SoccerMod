@@ -1,0 +1,10 @@
+{
+  "code": "mods.Deamon.Soccer.sound.AirHorn",
+  "sounds": [
+    {
+      "file": "mods/SoccerMod/Sounds/airhorn",
+      "volume": 0.35,
+	  "emitterCode" : "mods.Deamon.Soccer.sound.Emitter"
+    }
+  ]
+}

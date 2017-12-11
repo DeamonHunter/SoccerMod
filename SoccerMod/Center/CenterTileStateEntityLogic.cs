@@ -121,7 +121,7 @@ namespace SoccerMod.Center {
             }
             if (!Totem.IsReady()) {
                 var player = entity.PlayerEntityLogic;
-                player.ShowNotification(GameContext.NotificationDatabase.CreateNotificationFromCode(Component.NotClaimedNotification, entity.Step, NotificationParams.EmptyParams));
+                player.ShowNotification(GameContext.NotificationDatabase.CreateNotificationFromCode(Component.NotReadyNotification, entity.Step, NotificationParams.EmptyParams));
                 return;
             }
 

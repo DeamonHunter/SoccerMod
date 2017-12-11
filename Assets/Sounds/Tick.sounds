@@ -1,0 +1,10 @@
+{
+  "code": "mods.Deamon.Soccer.sound.Tick",
+  "sounds": [
+    {
+      "file": "staxel/sound/sfx/ui/Button_Focus_01",
+      "volume": 0.8,
+      "emitterCode" : "mods.Deamon.Soccer.sound.Emitter"
+    }
+  ]
+}

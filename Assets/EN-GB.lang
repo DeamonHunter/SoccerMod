@@ -1,0 +1,19 @@
+language.code=en-GB
+language=English
+
+
+mods.Deamon.Soccer.tile.BlueGoal.name=Blue Team Goal
+mods.Deamon.Soccer.tile.BlueGoal.description=The goal for the blue team. Does nothing without a Soccer Totem.
+mods.Deamon.Soccer.item.BlueFireworks=Red Team Soccer Fireworks
+mods.Deamon.Soccer.tile.RedGoal.name=Red Team Goal
+mods.Deamon.Soccer.tile.RedGoal.description=The goal for the red team. Does nothing without a Soccer Totem.
+mods.Deamon.Soccer.item.RedFireworks=Red Team Soccer Fireworks
+mods.Deamon.Soccer.tile.Center.name=Soccer Center
+mods.Deamon.Soccer.tile.Center.description=The center of the match. Spawns the ball. Does nothing without a Soccer Totem.
+mods.Deamon.Soccer.tile.Soccer.name=Soccer Sign
+mods.Deamon.Soccer.tile.Soccer.description=The totem which controls the soccer game. Keeps track of score as well.
+mods.Deamon.Soccer.item.SoccerBall.name=Soccer Ball
+mods.Deamon.Soccer.item.SoccerBall.description=The Soccer Ball. Please do not take the ball, the villagers will get mad. :(
+mods.deamon.soccer.controlHint.verb.SpawnBall=Start the Game!
+mods.Deamon.Soccer.notification.SoccerTotemNotReady.text=Soccer Totem is not Ready to start a new game!
+mods.Deamon.Soccer.notification.NotClaimed.text=A Soccer Totem must claim this tile!

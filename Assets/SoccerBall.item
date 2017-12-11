@@ -1,0 +1,30 @@
+{
+  "kind": "staxel.item.CraftItem",
+  "code": "mods.Deamon.Soccer.item.SoccerBall",
+  "icon": "mods/SoccerMod/SoccerBall.qb",
+  "inHand": "mods/SoccerMod/SoccerBall.qb",
+  "inHandOffset": {
+    "x": 0.0,
+    "y": 0.0,
+    "z": 0.0
+  },
+  "usageOffset": {
+    "x": 0.0,
+    "y": 0.0,
+    "z": 0.0
+  },
+  "inHandRotation": {
+    "x": 0.0,
+    "y": 1.54,
+    "z": -1.54
+  },
+  "isDockable": true,
+  "categories": [
+    "ball"
+  ],
+  "pricing": {
+    "value": 50.0,
+    "sellPrice": 30.0
+  },
+  "searchable": true
+}

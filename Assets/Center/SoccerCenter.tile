@@ -1,0 +1,49 @@
+{
+  "kind": "object",
+  "prefetchTileState": true,
+  "tileStateKind": "mods.Deamon.Soccer.tileState.Center",
+  "priority": 0,
+  "open": false,
+  "solid": false,
+  "collision": true,
+  "bouncyness": 0.1,
+  "unbreakable": false,
+  "damageSoundGroup": "staxel.sounds.damage.Wood",
+  "placeSoundGroup": "staxel.sounds.place.Wood",
+  "orientationVariants": true,
+  "randomizePosition": true,
+  "attachToBelow": false,
+  "placementDirections": [ "yn"],
+  "attachmentDirections": [],
+  "hammerable": { },
+  "prefetchTileState" : true,
+
+  "code": "mods.Deamon.Soccer.tile.Center",
+  "voxels": "mods/SoccerMod/Center/SoccerCenter.qb",
+  "attachToBelow": true,
+  "randomizePosition": false,
+  "categories": [
+    "misc",
+    "totem",
+    "sign"
+  ],
+  "searchable": true,
+  "mod.deamon.soccer.soccerCenter" : {
+    "soccerBall" : {
+        "code" : "mods.Deamon.Soccer.item.SoccerBall"
+    },
+    "ballSpawnLocation" : {"x": 0, "y":3, "z":0},
+    "notClaimedNotification" : "mods.Deamon.Soccer.notification.NotClaimed",
+    "notReadyNotification" : "mods.Deamon.Soccer.notification.SoccerTotemNotReady",
+    "countdown" : {
+        "0" : "mods/SoccerMod/Center/Go.qb",
+        "1" : "mods/SoccerMod/Center/1.qb",
+        "2" : "mods/SoccerMod/Center/2.qb",
+        "3" : "mods/SoccerMod/Center/3.qb",
+        "4" : "mods/SoccerMod/Center/4.qb",
+        "5" : "mods/SoccerMod/Center/5.qb"
+    },
+    "tickSound" : "mods.Deamon.Soccer.sound.Tick",
+    "startRoundSound" : "mods.Deamon.Soccer.sound.AirHorn"
+  }
+}

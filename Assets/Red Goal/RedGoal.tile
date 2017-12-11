@@ -1,0 +1,52 @@
+{
+  "__inherits": "staxel/tileObject/base.config",
+  "code": "mods.Deamon.Soccer.tile.RedGoal",
+  "voxels": "mods/SoccerMod/Red Goal/RedGoal.qb",
+  "tileStateKind": "mods.Deamon.Soccer.tileState.Goal",
+  "stepSoundGroup": "staxel.sounds.WoodFootSteps",
+  "randomizePosition": false,
+  "prefetchTileState" : true,
+  "compound": {
+    "size": {
+      "x": 3,
+      "y": 2,
+      "z": 1
+    }
+  },
+  "categories": [
+    "white",
+    "red",
+    "soccer",
+    "goal"
+  ],
+  "mod.deamon.soccer.soccerGoals": {
+    "blueGoalFireworkItem": {
+      "kind": "staxel.item.CraftItem",
+      "code": "mods.Deamon.Soccer.item.BlueFireworks"
+    },
+    "redGoalFireworkItem": {
+      "kind": "staxel.item.CraftItem",
+      "code": "mods.Deamon.Soccer.item.RedFireworks"
+    },
+    "fireworkFlightSeconds": 1.0,
+    "fireworkItemQuantity": 1,
+    "fireworkLaunchVelocity" : {
+        "x" : 0,
+        "y" : 45,
+        "z" : 0
+    },
+    "fireworkLaunchVelocitySpread": {
+      "x": 5.0,
+      "y": 0.0,
+      "z": 5.0
+    },
+    "scoreWithItemCategories": [
+      "ball"
+    ]
+  },
+  "pricing": {
+    "value": 100.0,
+    "sellPrice": 60.0
+  },
+  "searchable": true
+}

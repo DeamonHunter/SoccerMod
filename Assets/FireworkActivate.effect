@@ -1,0 +1,8 @@
+{
+  "__inherits": "staxel/effect/base.config",
+  "code": "mods.Deamon.Soccer.effects.FireworksActivate",
+  "sounds": [
+    "mods.SoccerMod.sounds.FireworksActivate"
+  ]
+
+}

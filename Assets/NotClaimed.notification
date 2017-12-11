@@ -1,0 +1,7 @@
+{
+  "__inherits": "staxel/notifications/GeneralNotification.config",
+  "code": "mods.Deamon.Soccer.notification.NotClaimed",
+  "translationCode": "mods.Deamon.Soccer.notification.NotClaimed.text",
+  "icon": "staxel/notifications/icons/NoIcon.png",
+  "soundEffect": "staxel.sound.sfx.ItemUseFail"
+}

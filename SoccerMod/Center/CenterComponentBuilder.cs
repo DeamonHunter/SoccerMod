@@ -19,6 +19,7 @@ namespace SoccerMod.Center {
             public Blob SoccerBall { get; private set; }
             public Vector3D BallSpawnLocation { get; private set; }
             public string NotClaimedNotification { get; private set; }
+            public string NotReadyNotification { get; private set; }
             public string TotemNotComplete { get; private set; }
             public string TickSound { get; private set; }
             public string StartRoundSound { get; private set; }
@@ -28,6 +29,7 @@ namespace SoccerMod.Center {
                 SoccerBall = config.FetchBlob("soccerBall");
                 BallSpawnLocation = config.GetBlob("ballSpawnLocation").GetVector3D();
                 NotClaimedNotification = config.GetString("notClaimedNotification", "");
+                NotReadyNotification = config.GetString("notReadyNotification", "");
                 TotemNotComplete = config.GetString("totemNotComplete", "");
                 TickSound = config.GetString("tickSound", "");
                 StartRoundSound = config.GetString("startRoundSound", "");

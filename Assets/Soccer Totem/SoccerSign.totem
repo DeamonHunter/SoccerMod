@@ -1,0 +1,32 @@
+{
+  "code": "mods.Deamon.Soccer.totem.SoccerSign",
+  "categories": [],
+  "region": {
+    "x": 14,
+    "y": 2,
+    "z": 8
+  },
+  "centreOffset": {
+    "x": 0,
+    "y": 1,
+    "z": -9
+  },
+  "tiers": 1,
+  "requiredObjects": {
+    "tier0": [
+      {
+        "code": "mods.Deamon.Soccer.tile.Center",
+        "count": 1
+      },
+      {
+        "code": "mods.Deamon.Soccer.tile.RedGoal",
+        "count": 1
+      },
+      {
+        "code": "mods.Deamon.Soccer.tile.BlueGoal",
+        "count": 1
+      }
+    ]
+  },
+  "requiresRoof": false
+}

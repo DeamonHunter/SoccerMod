@@ -1,0 +1,58 @@
+{
+  "kind": "object",
+  "prefetchTileState": true,
+  "tileStateKind": "mods.Deamon.Soccer.tileState.Totem",
+  "priority": 0,
+  "open": false,
+  "solid": false,
+  "collision": true,
+  "bouncyness": 0.1,
+  "unbreakable": false,
+  "damageSoundGroup": "staxel.sounds.damage.Wood",
+  "placeSoundGroup": "staxel.sounds.place.Wood",
+  "orientationVariants": true,
+  "randomizePosition": true,
+  "attachToBelow": true,
+  "placementDirections": [ "yn"],
+  "attachmentDirections": [],
+  "hammerable": { },
+  "totemCeiling": false,
+
+
+  "code": "mods.Deamon.Soccer.tile.Soccer",
+  "voxels": "mods/SoccerMod/Soccer Totem/SoccerSign.qb",
+  "attachToBelow": true,
+  "randomizePosition": false,
+  "compound": {
+    "size": {
+      "x": 3,
+      "y": 2,
+      "z": 1
+    }
+  },
+  "categories": [
+    "misc",
+    "totem",
+    "sign"
+  ],
+  "totem": {
+    "code": "mods.Deamon.Soccer.totem.SoccerSign",
+  },
+  "searchable": true,
+  "mod.deamon.soccer.soccerTotem":{
+    "redNumbers" : {
+        "0" : "mods/SoccerMod/Soccer Totem/Red0.qb",
+        "1" : "mods/SoccerMod/Soccer Totem/Red1.qb",
+        "2" : "mods/SoccerMod/Soccer Totem/Red2.qb",
+        "3" : "mods/SoccerMod/Soccer Totem/Red3.qb",
+    },
+    "blueNumbers" : {
+        "0" : "mods/SoccerMod/Soccer Totem/Blue0.qb",
+        "1" : "mods/SoccerMod/Soccer Totem/Blue1.qb",
+        "2" : "mods/SoccerMod/Soccer Totem/Blue2.qb",
+        "3" : "mods/SoccerMod/Soccer Totem/Blue3.qb",
+    },
+    "blueTeamScorePos" : {"x": -0.65625, "y": 0.09375,"z": -0.25},
+    "redTeamScorePos" : {"x": 0.65625, "y": 0.09375,"z": -0.25}
+  }
+}

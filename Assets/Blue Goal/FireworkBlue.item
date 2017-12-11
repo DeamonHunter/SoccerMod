@@ -1,0 +1,31 @@
+{
+  "kind": "staxel.item.CraftItem",
+  "code": "mods.Deamon.Soccer.item.BlueFireworks",
+  "icon": "staxel/item/generic/FireworkRed.qb",
+  "inHand": "staxel/item/generic/FireworkRed.qb",
+  "inHandOffset": {
+    "x": 0.0,
+    "y": 0.0,
+    "z": 0.0
+  },
+  "usageOffset": {
+    "x": 0.0,
+    "y": 0.0,
+    "z": 0.0
+  },
+  "inHandRotation": {
+    "x": 0.0,
+    "y": 1.54,
+    "z": -1.54
+  },
+  "isDockable": true,
+  "searchable": false,
+  "categories": [
+    "firework",
+    "soccer",
+    "blue"
+  ],
+  "firework": {
+    "explodeEffect": "mods.Deamon.Soccer.effect.FireworkBlue"
+  }
+}

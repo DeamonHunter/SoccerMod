@@ -1,0 +1,20 @@
+{
+  "code": "mods.Deamon.Soccer.sound.FireworksBang",
+  "sounds": [
+    {
+      "file": "staxel/sound/sfx/item/fireworks/Fireworks_Bang_01",
+      "volume": 0.7,
+	    "emitterCode" : "mods.Deamon.Soccer.sound.Fireworks"
+    },
+    {
+      "file": "staxel/sound/sfx/item/fireworks/Fireworks_Bang_02",
+      "volume": 0.7,
+	  "emitterCode" : "mods.Deamon.Soccer.sound.Fireworks"
+    },
+    {
+      "file": "staxel/sound/sfx/item/fireworks/Fireworks_Bang_03",
+      "volume": 0.7,
+	  "emitterCode" : "mods.Deamon.Soccer.sound.Fireworks"
+    }
+  ]
+}
