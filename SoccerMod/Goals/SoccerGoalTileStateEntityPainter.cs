@@ -21,7 +21,7 @@ namespace SoccerMod.Goals {
             }
         }
 
-        public override void RenderUpdate(Timestep timestep, Entity entity, AvatarController avatarController, EntityUniverseFacade facade) {
+        public override void RenderUpdate(Timestep timestep, Entity entity, AvatarController avatarController, EntityUniverseFacade facade, int updateSteps) {
             _effectRenderer.RenderUpdate(timestep, entity.Effects, entity, this, facade, entity.Physics.Position);
         }
 
@@ -50,10 +50,6 @@ namespace SoccerMod.Goals {
                 _billboardNumberRenderer.DrawInteger(logic.GoalCount, renderPosition, Vector3D.Zero, scale);
             }
             _billboardNumberRenderer.Draw(graphics, renderOrigin, matrix);
-        }
-
-        public override bool AssociatedWith(Entity entity) {
-            return entity.Logic is SoccerGoalTileStateEntityLogic;
         }
 
         public override void StartEmote(Entity entity, Timestep renderTimestep, EmoteConfiguration emote) { }

@@ -22,7 +22,7 @@ namespace SoccerMod.Center {
             _soundEmitter = null;
         }
 
-        public override void RenderUpdate(Timestep timestep, Entity entity, AvatarController avatarController, EntityUniverseFacade facade) {
+        public override void RenderUpdate(Timestep timestep, Entity entity, AvatarController avatarController, EntityUniverseFacade facade, int updateSteps) {
             var logic = entity.TileStateEntityLogic as CenterTileStateEntityLogic;
 
             int lastNum = _numberToDraw;
@@ -93,10 +93,6 @@ namespace SoccerMod.Center {
             var m = Matrix4F.CreateTranslation(delta);
 
             logic.Component.Numbers[_numberToDraw].Render(graphics, m.Multiply(matrix));
-        }
-
-        public override bool AssociatedWith(Entity entity) {
-            return entity.Logic is CenterTileStateEntityLogic;
         }
 
         public override void StartEmote(Entity entity, Timestep renderTimestep, EmoteConfiguration emote) { }
